@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    .font_1{
+  font-family: "SUSE", sans-serif;
+  font-optical-sizing: auto;
+ 
+  font-style: normal;
+}
+        .outer_div{
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .user_div{
+            width: 400px;
+            height: 400px;
+            border: 8px solid white;
+            border-radius: 10px;
+            box-shadow: 0.5 0.5 0.5;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            color: white;
+            transition-property: all;
+            transition-duration: 0.5s;
+            transition-timing-function: linear;
+        }
+        
+        .user_div:hover {
+            transform: scale(1.01);
+        }
+
+        .inner_div {
+            width: 80%;
+            margin: 0px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;" class="text-4xl m-8 font_1 font-semibold">All Users</h1>
+ <div class="text-align:center flex justify-center m-2">
+    <form action="/user/new">
+        <button class="text-white btn bg-gray-500 w-32" type="submit">Create Post</button>
+    </form>
+ </div>
+    <div class="outer_div font_1">
+        <% let count = 0; %>
+        <% for(let user of users) { %>
+            <% 
+                let r1 = Math.floor(Math.random() * 101) + 100; 
+                let g1 = Math.floor(Math.random() * 101) + 100;
+                let b1 = Math.floor(Math.random() * 101) + 100;
+                let color1 = `rgb(${r1}, ${g1}, ${b1})`;
+
+                let r2 = Math.floor(Math.random() * 101)+ 100;
+                let g2 = Math.floor(Math.random() * 101)+ 100;
+                let b2 = Math.floor(Math.random() * 101)+ 100;
+                let color2 = `rgb(${r2}, ${g2}, ${b2})`;
+
+                let randomColor = `linear-gradient(135deg, ${color1}, ${color2})`;
+            %>
+            <div class="user_div" style="background: <%= randomColor %>;" data-id="<%= count %>">
+                <div class="inner_div space-y-4">
+                    <p>User No: <%= count++ %></p>
+                    <h1 class="text-2xl">Name: <%= user.username %></h1>
+                    <!-- <p class="text-xl">ID: <%= user.id %></p> -->
+                    <p class="text-xl">Email: <%= user.email %></p>
+                   <div class="flex gap-4">
+                    <form action="/user/<%=user.id%>/edit">
+                        <button class="text-white btn bg-gray-500" type="submit">Edit</button>
+                    </form>
+                  
+                    <form action="/user/<%= user.id %>/delete" method="get"    style="display: inline;">
+                        <button class="btn bg-gray-500 text-white" type="submit">Delete</button>
+                      </form>
+                   </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+       
+        function getRandomDeepColor() {
+            let r = Math.floor(Math.random() * 100);
+            let g = Math.floor(Math.random() * 100);
+            let b = Math.floor(Math.random() * 100);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+        function getRandomLightColor() {
+             
+                let r = Math.floor(Math.random() * 156) + 100; 
+                let g = Math.floor(Math.random() * 156) + 100;
+                let b = Math.floor(Math.random() * 156) + 100;
+                return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Select all user divs
+        const userDivs = document.querySelectorAll('.user_div');
+
+        // Add event listeners to change the border color on hover
+        userDivs.forEach(div => {
+            div.addEventListener('mouseenter', function() {
+                div.style.border = `8px solid ${getRandomLightColor()}`;
+            });
+
+            div.addEventListener('mouseleave', function() {
+                div.style.border = '8px solid white'; // Reset to default color
+            });
+        });
+    </script>
+</body>
+</html>
